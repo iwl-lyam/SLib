@@ -28,7 +28,7 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Install nasm
         run:
-          apt install nasm
+          sudo apt install nasm
       
       - name: Assemble files
         run: |
