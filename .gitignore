@@ -1,0 +1,7 @@
+lib.o
+io.o
+ascii.o
+main
+test.o
+.replit
+replit.nix
