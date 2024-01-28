@@ -9,3 +9,7 @@ My assembly util library to speed up coding, with some useful functions
 | print         | io.asm            | Prints out a string to STDOUT                                               | Pointer to text          | Pointer to length | N/A              | N/A                  |
 | read          | io.asm            | Takes in a string from STDIN                                                | Pointer to input buffer  | Pointer to length | N/A              | N/A                  |
 | exit          | io.asm            | Smoothly exits the program                                                  | N/A                      | N/A               | N/A              | N/A                  |
+
+## Linking
+
+To link the library, use ld with all the library files as usual, but add the `-r` (relocatable) option, and the output being `lib.o`. Then, when linking your main program, your inputs should be `lib.o` and your program.
