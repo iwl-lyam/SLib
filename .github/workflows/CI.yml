@@ -31,9 +31,4 @@ jobs:
           sudo apt install nasm
       
       - name: Assemble files
-        run: |
-          nasm -f elf64 -F dwarf -o io.o lib/io.asm
-          nasm -f elf64 -F dwarf -o ascii.o lib/convertAscii.asm
-
-      - name: Link
-        run: ld -o lib.o -r io.o ascii.o
+        run: make
