@@ -5,3 +5,5 @@ main
 test.o
 .replit
 replit.nix
+.git
+.github

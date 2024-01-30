@@ -18,11 +18,16 @@ convertAscii:
   jmp loop
 
 loop:
-  cmp byte [rdx+rcx],0
+  ;cmp byte [rdx+rcx],0
+  ;jz end
+
+  ;cmp byte [rdx+rcx],0xa
+  ;je end
+
+  cmp rcx,3
   jz end
 
-  cmp byte [rdx+rcx],0xa
-  je end
+  xor rbx,rbx
 
   cmp r10,0
   jz toi
@@ -31,14 +36,36 @@ loop:
 toa:
   mov bl,[rdx+rcx]
   add bl,'0'
-  mov [rax+rcx],bl
+  mov rdx, 10
+  push rax
+  mov rax,[rax]
+  mul rdx
+  mov rsi,rax
+
+  add rsi,rbx
+  pop rax
+  mov [rax],rsi
+  
+  ;mov [rax+rcx],bl
   inc rcx
   jmp loop
 
 toi:
   mov bl,[rdx+rcx]
   sub bl,'0'
-  mov [rax+rcx],bl
+  push rdx
+  mov rdx, 10
+  push rax
+  mov rax,[rax]
+  mul rdx
+  pop rdx
+  mov rsi,rax
+
+  add rsi,rbx
+  pop rax
+  mov [rax],rsi
+  
+  ;mov [rax+rcx],bl
   inc rcx
   jmp loop
 
