@@ -2,25 +2,32 @@ bits 64
 section .text
 
 global _start
-extern print,exit
-extern convert_function
+extern print,exit,read
+extern os_string_to_int
+extern os_int_to_string
 
 _start:
-  mov rdx, start  ; Address of input string
-  mov rax, obuf ; Address of output buffer
-  mov r10, 0             ; 0 corresponds to atoi
-  call convert_function
+  mov rsi,start
+  call os_string_to_int
+  mov [obuf], rax
 
-  ;lea rsi, [obuf]
-  ;mov rdx, 4
-  ;mov rax,[rsi]
-  ;mul rdx
-  ;mov [obuf],rax
+  mov rax,obuf3
+  mov rbx,8
+  call read
 
-  mov rdx, obuf  ; Address of input string
-  mov rax, obuf2 ; Address of output buffer
-  mov r10, 1             ; 1 corresponds to itoa
-  call convert_function
+  mov rsi,obuf3
+  call os_string_to_int
+  mov [obuf3], rax
+
+  lea rsi, [obuf]
+  mov rdx, [obuf3]
+  mov rax,[rsi]
+  mul rdx
+  mov [obuf],rax
+
+  mov rax,[obuf]
+  mov rdi,obuf2
+  call os_int_to_string
 
   mov rax,obuf2
   mov rbx,8
@@ -31,6 +38,7 @@ _start:
 section .bss
 obuf resb 8
 obuf2 resb 8
+obuf3 resb 8
 
 section .data
 start db "123",0

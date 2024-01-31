@@ -1,75 +1,70 @@
 bits 64
-
 section .text
-global convertAscii
 
-convertAscii:
-  ; rdx - address of input
-  ; rax - address of output buffer
-  ; r10 - 0 (to int) or 1 (to string)
-  ; Stores result in the output buffer
+global os_string_to_int
+global os_int_to_string
 
-  ; Saves state of rcx and rbx
+; os_string_to_int -- Convert a string into a binary interger
+;  IN:   RSI = location of string
+; OUT:   RAX = integer value
+;   All other registers preserved
+; Adapted from http://www.cs.usfca.edu/~cruse/cs210s09/uint2rax.s
 
-  push rcx
-  push rbx
+os_string_to_int:
+   push rsi
+   push rdx
+   push rcx
+   push rbx
 
-  xor rcx,rcx
-  jmp loop
+   xor eax, eax         ; initialize accumulator
+   mov rbx, 10         ; decimal-system's radix
+os_string_to_int_next_digit:
+   mov cl, [rsi]         ; fetch next character
+   cmp cl, '0'         ; char preceeds '0'?
+   jb os_string_to_int_invalid   ; yes, not a numeral
+   cmp cl, '9'         ; char follows '9'?
+   ja os_string_to_int_invalid   ; yes, not a numeral
+   mul rbx            ; ten times prior sum
+   and rcx, 0x0F         ; convert char to int
+   add rax, rcx         ; add to prior total
+   inc rsi            ; advance source index
+   jmp os_string_to_int_next_digit   ; and check another char
 
-loop:
-  ;cmp byte [rdx+rcx],0
-  ;jz end
+os_string_to_int_invalid:
+   pop rbx
+   pop rcx
+   pop rdx
+   pop rsi
+   ret
 
-  ;cmp byte [rdx+rcx],0xa
-  ;je end
+;-----------------------------------
 
-  cmp rcx,3
-  jz end
+os_int_to_string:
+   push rdx
+   push rcx
+   push rbx
+   push rax
 
-  xor rbx,rbx
+   mov rbx, 10               ; base of the decimal system
+   xor ecx, ecx               ; number of digits generated
+os_int_to_string_next_divide:
+   xor edx, edx               ; RAX extended to (RDX,RAX)
+   div rbx                  ; divide by the number-base
+   push rdx               ; save remainder on the stack
+   inc rcx                  ; and count this remainder
+   cmp rax, 0               ; was the quotient zero?
+   jne os_int_to_string_next_divide      ; no, do another division
 
-  cmp r10,0
-  jz toi
-  jmp toa
+os_int_to_string_next_digit:
+   pop rax                  ; else pop recent remainder
+   add al, '0'               ; and convert to a numeral
+   stosb                  ; store to memory-buffer
+   loop os_int_to_string_next_digit      ; again for other remainders
+   xor al, al
+   stosb                  ; Store the null terminator at the end of the string
 
-toa:
-  mov bl,[rdx+rcx]
-  add bl,'0'
-  mov rdx, 10
-  push rax
-  mov rax,[rax]
-  mul rdx
-  mov rsi,rax
-
-  add rsi,rbx
-  pop rax
-  mov [rax],rsi
-  
-  ;mov [rax+rcx],bl
-  inc rcx
-  jmp loop
-
-toi:
-  mov bl,[rdx+rcx]
-  sub bl,'0'
-  push rdx
-  mov rdx, 10
-  push rax
-  mov rax,[rax]
-  mul rdx
-  pop rdx
-  mov rsi,rax
-
-  add rsi,rbx
-  pop rax
-  mov [rax],rsi
-  
-  ;mov [rax+rcx],bl
-  inc rcx
-  jmp loop
-
-end:
-  pop rbx
-  pop rcx
-  ret
+   pop rax
+   pop rbx
+   pop rcx
+   pop rdx
+   ret
