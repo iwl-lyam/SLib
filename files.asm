@@ -17,7 +17,7 @@ _start:
     xor rdx, rdx
     mov rax, obuf
     mov rbx, fdbuf
-    mov rdx, mode
+    mov rdx, [mode]
     call openOrCreateFile
 
     mov rax, msg2
