@@ -52,7 +52,7 @@ msg2 db "Content: ",0
 msg2_l equ $-msg2
 failed db "Failed to open file",10,0
 failed_l equ $-failed
-mode dd 0666
+mode dd 0x1B6
 
 section .bss
 obuf resb 16
