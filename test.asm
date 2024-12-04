@@ -27,6 +27,10 @@ done:
   ret
 
 _start:
+
+  mov rax,first
+  mov rbx,15
+  call print
   
   mov rax,obuf
   mov rbx,8
@@ -44,7 +48,7 @@ _start:
   call looph
 
   mov rax,close
-  mov rbx,2
+  mov rbx,3
   call print
   
   jmp exit
@@ -52,7 +56,9 @@ _start:
 section .data
 dash db "-",0
 open db "<",0
-close db ">",0
+close db ">",10,0
+
+first db "Input length: ",0
 
 section .bss
 obuf resb 8

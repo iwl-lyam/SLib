@@ -9,6 +9,8 @@ My assembly util library to speed up coding, with some useful functions
 | print         | io.asm            | Prints out a string to STDOUT                                               | Pointer to text          | Pointer to length | N/A              | N/A                  |
 | read          | io.asm            | Takes in a string from STDIN                                                | Pointer to input buffer  | Pointer to length | N/A              | N/A                  |
 | exit          | io.asm            | Smoothly exits the program                                                  | N/A                      | N/A               | N/A              | N/A                  |
+| open          | file.asm          | Open a file and store the file descriptor                                   | Pointer to file path     | Pointer to FD buffer | N/A | N/A |
+| openOrCreate | file.asm | Open a file or create it if it doesn't exist, then store the file descriptor | Pointer to file path | Pointer to FD buffer | File permissions | N/A |
 
 ## Linking
 

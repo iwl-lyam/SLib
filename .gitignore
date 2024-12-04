@@ -7,3 +7,10 @@ test.o
 replit.nix
 .git
 .github
+test.c
+*.o
+*.out
+
+
+/nasm-2.14.02
+nasm-2.14.02.tar.bz2
