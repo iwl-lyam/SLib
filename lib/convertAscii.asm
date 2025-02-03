@@ -8,7 +8,6 @@ global os_int_to_string
 ;  IN:   RSI = location of string
 ; OUT:   RAX = integer value
 ;   All other registers preserved
-; Adapted from http://www.cs.usfca.edu/~cruse/cs210s09/uint2rax.s
 
 os_string_to_int:
    push rsi
