@@ -6,6 +6,10 @@ for f in *.dmp ; do
 
     readelf -a $a
     echo ""
+    echo "HEXDUMP"
+    echo ""
+    hexdump -C $a
+    echo ""
     echo "RUNNING PROGRAM"
     echo ""
     ./$a
